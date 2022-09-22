@@ -1,4 +1,4 @@
-service: aws-node-express-dynamodb-api-project
+service: aws-node-exp-project
 frameworkVersion: '3'
 
 custom:
@@ -6,6 +6,7 @@ custom:
 
 provider:
   name: aws
+  region: eu-central-1
   runtime: nodejs14.x
   iam:
     role:
