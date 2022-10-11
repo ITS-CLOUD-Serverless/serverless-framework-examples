@@ -1,0 +1,18 @@
+service: ip-lookup
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+  stage: dev
+  region: eu-central-1
+
+functions:
+  ip_lookup:
+    handler: handler.ip_lookup
+    events:
+    - httpApi:
+        path: /my-ip
+        method: get
