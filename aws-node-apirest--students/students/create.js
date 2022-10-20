@@ -10,23 +10,18 @@ module.exports.create = (event, context, callback) => {
   const data = JSON.parse(event.body);
 
   // check existance of all properties needed to create a student obj
-  const hasProperties = () => {
-
-    return (data.hasOwnProperty('firstName') &&
-      data.hasOwnProperty('lastName') &&
-      data.hasOwnProperty('course'))
-  }
+  const hasProperties = () => data.hasOwnProperty('firstName') && data.hasOwnProperty('lastName') && data.hasOwnProperty('course');
 
   // check is all properties needed are strings
-  const isString = () => {
-
-    return (typeof data.firstName === 'string' &&
-      typeof data.lastName === 'string' &&
-      typeof data.course === 'string')
-  }
+  const isString = () => !hasProperties() ? hasProperties() : (typeof data.firstName === 'string'
+    && typeof data.lastName === 'string'
+    && typeof data.course === 'string'
+    && data.firstName !== ''
+    && data.lastName !== ''
+    && data.course !== '');
 
   // validates if data has properties and if those properties are of type string
-  if (!hasProperties() || !isString()) {
+  if (!isString()) {
     console.error('Validation Failed');
     callback(null, {
       statusCode: 400,
