@@ -8,7 +8,31 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 module.exports.create = (event, context, callback) => {
   const timestamp = new Date().getTime();
   const data = JSON.parse(event.body);
-  if (typeof data.firstName !== 'string') {
+
+  // check existance of all properties needed to create a student obj
+  const hasProperties = () => {
+    var res = false
+    if (data.hasOwnProperty('firstName') &&
+      data.hasOwnProperty('lastName') &&
+      data.hasOwnProperty('course')) {
+      res = true
+    }
+    return res
+  }
+
+  // check is all properties needed are strings
+  const isString = () => {
+    var res = false
+    if (typeof data.firstName === 'string' &&
+      typeof data.lastName === 'string' &&
+      typeof data.course === 'string') {
+      res = true
+    }
+    return res
+  }
+
+  // validates if data has properties and if those properties are of type string
+  if (!hasProperties() || !isString()) {
     console.error('Validation Failed');
     callback(null, {
       statusCode: 400,
@@ -27,7 +51,7 @@ module.exports.create = (event, context, callback) => {
       firstName,
       lastname,
       course,
-      voteAvg : 6,
+      voteAvg: 6,
       createdAt: timestamp,
       updatedAt: timestamp,
     },
