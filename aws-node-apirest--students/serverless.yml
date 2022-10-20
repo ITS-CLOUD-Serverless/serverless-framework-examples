@@ -31,36 +31,36 @@ functions:
     handler: students/create.create
     events:
       - httpApi:
-          path: todos
-          method: post
+          path: /students
+          method: POST
 
   list:
     handler: students/list.list
     events:
       - httpApi:
-          path: todos
-          method: get
+          path: /students
+          method: GET
           
   get:
     handler: students/get.get
     events:
       - httpApi:
-          path: students/{id}
-          method: get       
+          path: /students/{id}
+          method: GET       
 
   update:
     handler: students/update.update
     events:
       - httpApi:
-          path: students/{id}
-          method: put         
+          path: /students/{id}
+          method: PUT         
 
   delete:
     handler: students/delete.delete
     events:
       - httpApi:
-          path: students/{id}
-          method: delete
+          path: /students/{id}
+          method: DELETE
 
 resources:
   Resources:

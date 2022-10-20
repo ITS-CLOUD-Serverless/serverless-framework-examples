@@ -1,10 +1,10 @@
 {
-  "name": "aws-rest-with-dynamodb",
+  "name": "aws-node-apirest--students",
   "version": "1.0.0",
-  "description": "Serverless CRUD service exposing a REST HTTP interface",
+  "description": "Serverless CRUD service exposing a REST HTTP interface for ITS Students",
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "uuid": "^2.0.3"
+    "uuid": "^7.0"
   }
 }
