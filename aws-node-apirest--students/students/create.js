@@ -20,11 +20,13 @@ module.exports.create = (event, context, callback) => {
     && data.lastName !== ''
     && data.course !== '');
 
+  console.log(data);
+
   // validates if data has properties and if those properties are of type string
   if (!isString()) {
     console.error('Validation Failed');
     callback(null, {
-      statusCode: 400,
+      statusCode: 422,
       headers: { 'Content-Type': 'text/plain' },
       body: 'Couldn\'t create the Student.',
     });
@@ -36,9 +38,9 @@ module.exports.create = (event, context, callback) => {
   const params = {
     TableName: process.env.STUDENTS_TABLE,
     Item: {
-      id: uuid.v1(),
+      studentId: uuid.v1(),
       firstName,
-      lastname,
+      lastName,
       course,
       voteAvg: 6,
       createdAt: timestamp,
