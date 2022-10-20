@@ -10,7 +10,7 @@ module.exports.create = (event, context, callback) => {
   const data = JSON.parse(event.body);
 
   // check existance of all properties needed to create a student obj
-  const hasProperties = () => data.hasOwnProperty('firstName') && data.hasOwnProperty('lastName') && data.hasOwnProperty('course');
+  const hasProperties = () => data === null || data === undefined ? false : (data.hasOwnProperty('firstName') && data.hasOwnProperty('lastName') && data.hasOwnProperty('course'));
 
   // check is all properties needed are strings
   const isString = () => !hasProperties() ? hasProperties() : (typeof data.firstName === 'string'
