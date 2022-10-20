@@ -1,0 +1,77 @@
+service: aws-node-apirest--students
+
+frameworkVersion: '3'
+
+custom:
+  tableName: 'students-table-${sls:stage}'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: eu-central-1
+  profile: serverless-admin
+  environment:
+    STUDENTS_TABLE: ${self:custom.tableName}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - Fn::GetAtt: [ StudentsTable, Arn ]
+
+functions:
+  create:
+    handler: students/create.create
+    events:
+      - httpApi:
+          path: todos
+          method: post
+
+  list:
+    handler: students/list.list
+    events:
+      - httpApi:
+          path: todos
+          method: get
+          
+  get:
+    handler: students/get.get
+    events:
+      - httpApi:
+          path: students/{id}
+          method: get       
+
+  update:
+    handler: students/update.update
+    events:
+      - httpApi:
+          path: students/{id}
+          method: put         
+
+  delete:
+    handler: students/delete.delete
+    events:
+      - httpApi:
+          path: students/{id}
+          method: delete
+
+resources:
+  Resources:
+    StudentsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: studentId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: studentId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:custom.tableName}
