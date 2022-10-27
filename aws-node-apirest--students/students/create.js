@@ -3,9 +3,11 @@
 const uuid = require('uuid');
 const AWS = require('aws-sdk'); // eslint-disable-line import/no-extraneous-dependencies
 
+const { performValidate } = require('./lib/validate');
+
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-module.exports.create = (event, context, callback) => {
+const create = (event, context, callback) => {
   const timestamp = new Date().getTime();
   const data = JSON.parse(event.body);
 
@@ -21,8 +23,6 @@ module.exports.create = (event, context, callback) => {
     && data.firstName !== ''
     && data.lastName !== ''
     && data.course !== '');
-
-  
 
   // validates if data has properties and if those properties are of type string
   if (!isString()) {
@@ -71,3 +71,6 @@ module.exports.create = (event, context, callback) => {
     callback(null, response);
   });
 };
+
+
+module.exports.create = create;

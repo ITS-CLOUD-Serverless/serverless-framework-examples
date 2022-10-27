@@ -21,10 +21,14 @@ module.exports.list = (event, context, callback) => {
       return;
     }
 
+    const resultsObj = {
+      data: result.Items
+    };
+
     // create a response
     const response = {
       statusCode: 200,
-      body: JSON.stringify(result.Items),
+      body: JSON.stringify(resultsObj),
     };
     callback(null, response);
   });
