@@ -23,6 +23,7 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: python3.8
+  profile: serverless-admin
 
 # you can overwrite defaults here
 #  stage: dev

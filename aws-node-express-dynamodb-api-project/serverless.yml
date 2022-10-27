@@ -8,6 +8,7 @@ provider:
   name: aws
   region: eu-central-1
   runtime: nodejs14.x
+  profile: serverless-admin
   iam:
     role:
       statements:
