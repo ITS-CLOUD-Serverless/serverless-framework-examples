@@ -1,0 +1,24 @@
+service: azfx-node-http
+
+provider:
+  name: azure
+  runtime: nodejs14
+  location: West US
+
+plugins:
+  - serverless-azure-functions
+
+package:
+  exclude:
+    - node_modules/**
+    - .gitignore
+    - package.json
+    - .git/**
+
+functions:
+  hello:
+     handler: handler.hello
+     events:
+       - http: true
+         x-azure-settings:
+           authLevel: anonymous
