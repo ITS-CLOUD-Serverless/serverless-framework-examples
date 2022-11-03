@@ -1,0 +1,57 @@
+service: slsrestapi-monolitich
+
+frameworkVersion: '3'
+
+custom:
+  tableName: 'todos-table-${sls:stage}'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: eu-central-1
+  profile: serverless-admin
+  environment:
+    TABLE_TODOS: ${self:custom.tableName}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - Fn::GetAtt: [ TodosTable, Arn ]
+functions:
+  monolitich-handler:
+    handler: monolitich-handler.handler
+    events:
+      - httpApi:
+          path: todos
+          method: post          
+      - httpApi:
+          path: todos
+          method: get          
+      - httpApi:
+          path: todos/{id}
+          method: get          
+      - httpApi:        
+          path: todos/{id}
+          method: put
+           
+resources:
+  Resources:
+    TodosTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:custom.tableName}
