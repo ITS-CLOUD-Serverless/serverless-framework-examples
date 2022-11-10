@@ -1,0 +1,79 @@
+service: slsrestapi-booking-services
+
+frameworkVersion: '3'
+
+custom:
+  tableName: 'booking-table-${sls:stage}'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: eu-central-1
+  profile: serverless-admin
+  httpApi:
+    cors: true
+  environment:
+    BOOKING_TABLE: ${self:custom.tableName}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - Fn::GetAtt: [ BookingTable, Arn ]
+functions:
+  booking-rooms-handler:
+    handler: rooms/mainHandler.main    
+    events:
+      - httpApi:
+          path: /booking/rooms
+          method: post          
+      - httpApi:
+          path: /booking/rooms
+          method: get          
+      - httpApi:
+          path: /booking/rooms/{id}
+          method: get          
+      - httpApi:        
+          path: /booking/rooms/{id}
+          method: patch
+      - httpApi:        
+          path: /booking/rooms/{id}
+          method: delete
+  booking-parkings-handler:
+    handler: parkings/mainHandler.main    
+    events:
+      - httpApi:
+          path: /booking/parkings
+          method: post          
+      - httpApi:
+          path: /booking/parkings
+          method: get          
+      - httpApi:
+          path: /booking/parkings/{id}
+          method: get          
+      - httpApi:        
+          path: /booking/parkings/{id}
+          method: patch
+      - httpApi:        
+          path: /booking/parkings/{id}
+          method: delete        
+resources:
+  Resources:
+    BookingTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:custom.tableName}

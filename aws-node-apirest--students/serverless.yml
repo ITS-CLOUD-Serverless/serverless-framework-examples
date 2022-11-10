@@ -10,6 +10,8 @@ provider:
   runtime: nodejs16.x
   region: eu-central-1
   profile: serverless-admin
+  timeout: 20
+  memorySize: 2048
   environment:
     STUDENTS_TABLE: ${self:custom.tableName}
   iam:

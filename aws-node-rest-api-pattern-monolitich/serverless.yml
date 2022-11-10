@@ -30,17 +30,17 @@ functions:
     handler: monolitich-handler.handler
     events:
       - httpApi:
-          path: todos
+          path: /todos
           method: post          
       - httpApi:
-          path: todos
+          path: /todos
           method: get          
       - httpApi:
-          path: todos/{id}
+          path: /todos/{id}
           method: get          
       - httpApi:        
-          path: todos/{id}
-          method: put
+          path: /todos/{id}
+          method: patch
            
 resources:
   Resources:
